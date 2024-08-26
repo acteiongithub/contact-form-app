@@ -67,7 +67,7 @@ function ContactForm() {
         const errors = validate();
         if (Object.keys(errors).length === 0) {
             try {
-                axios.post('http://localhost:5000/submit', formData)
+                axios.post('/submit', formData)
                     .then(response => {
                         alert('Form submitted successfully');
                         setFormData({
@@ -93,7 +93,7 @@ function ContactForm() {
     };
 
     const fetchContacts = () => {
-        axios.get('http://localhost:5000/contacts')
+        axios.get('/contacts')
             .then(response => {
                 setContacts(response.data);
             })
