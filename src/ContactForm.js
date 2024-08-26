@@ -61,9 +61,9 @@ function ContactForm() {
         return errors;
     };
 
-    const handleSubmit =async (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-
+    
         const errors = validate();
         if (Object.keys(errors).length === 0) {
             try {
@@ -74,7 +74,9 @@ function ContactForm() {
                     },
                     body: JSON.stringify(formData),
                 });
+                
                 if (response.ok) {
+                    //const responseJson = await response.json(); // Parse the response as JSON
                     alert('Form submitted successfully');
                     setFormData({
                         firstname: '',
@@ -86,11 +88,12 @@ function ContactForm() {
                     setErrors(null);
                     fetchContacts();
                 } else {
-                    alert('Error sending message', response.data.error);
+                    const errorJson = await response.json(); // Parse error response
+                    alert('Error sending message: ' + errorJson.error);
                 }
-            }
-            catch (error) {
+            } catch (error) {
                 alert('Network error');
+                console.error('Network error:', error);
             }
         } else {
             setErrors(errors);
