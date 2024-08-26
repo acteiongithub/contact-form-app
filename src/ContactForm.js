@@ -77,6 +77,7 @@ function ContactForm() {
                             phone: '',
                             message: '',
                         });
+                        setErrors(null);
                         fetchContacts();
                     })
                     .catch(error => {
