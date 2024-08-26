@@ -61,28 +61,33 @@ function ContactForm() {
         return errors;
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit =async (e) => {
         e.preventDefault();
 
         const errors = validate();
         if (Object.keys(errors).length === 0) {
             try {
-                axios.post('/submit', formData)
-                    .then(response => {
-                        alert('Form submitted successfully');
-                        setFormData({
-                            firstname: '',
-                            lastname: '',
-                            email: '',
-                            phone: '',
-                            message: '',
-                        });
-                        setErrors(null);
-                        fetchContacts();
-                    })
-                    .catch(error => {
-                        console.error('There was an error submitting the form!', error);
+                const response = await fetch('/submit', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData),
+                });
+                if (response.ok) {
+                    alert('Form submitted successfully');
+                    setFormData({
+                        firstname: '',
+                        lastname: '',
+                        email: '',
+                        phone: '',
+                        message: '',
                     });
+                    setErrors(null);
+                    fetchContacts();
+                } else {
+                    alert('Error sending message', response.data.error);
+                }
             }
             catch (error) {
                 alert('Network error');
